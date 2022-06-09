@@ -4,6 +4,7 @@ import 'package:flutter_ithome/app/common/app_style.dart';
 import 'package:flutter_ithome/app/controller/news_controller.dart';
 import 'package:flutter_ithome/app/views/news/news_category_view.dart';
 import 'package:flutter_ithome/app/views/news/news_new_view.dart';
+import 'package:flutter_ithome/app/views/news/news_rank_view.dart';
 import 'package:flutter_ithome/model/category_item.dart';
 import 'package:get/get.dart';
 import 'package:remixicon/remixicon.dart';
@@ -38,9 +39,7 @@ class NewsPage extends GetView<NewsController> {
       return const NewsNewView();
     }
     if (categoryItem.id == "rank") {
-      return Center(
-        child: Text(categoryItem.name),
-      );
+      return const NewsRankView();
     }
     if (categoryItem.id == "comment") {
       return Center(

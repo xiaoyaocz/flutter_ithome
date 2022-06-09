@@ -61,6 +61,7 @@ class BasePageController<T> extends BaseController {
       if (loadding) return;
       loadding = true;
       pageLoadding.value = currentPage == 1;
+      update();
       var result = await getData(currentPage, pageSize);
       //是否可以加载更多
       if (result.isNotEmpty) {
@@ -84,6 +85,7 @@ class BasePageController<T> extends BaseController {
     } finally {
       loadding = false;
       pageLoadding.value = false;
+      update();
     }
   }
 

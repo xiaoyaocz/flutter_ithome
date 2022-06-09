@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         title: 'IT之家',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.red,
           fontFamily: "微软雅黑",
         ),
         debugShowCheckedModeBanner: false,

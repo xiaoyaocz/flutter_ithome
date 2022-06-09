@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_ithome/app/common/app_style.dart';
+import 'package:flutter_ithome/app/common/utils.dart';
 import 'package:flutter_ithome/app/controller/news/news_new_controller.dart';
 import 'package:flutter_ithome/widget/empty.dart';
 import 'package:flutter_ithome/widget/error.dart';
@@ -17,7 +18,7 @@ class NewsNewView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KeepAliveWrapper(
-      child: GetX<NewsNewController>(
+      child: GetBuilder<NewsNewController>(
         init: NewsNewController(),
         builder: ((c) {
           // 页面错误
@@ -80,12 +81,17 @@ class NewsNewView extends StatelessWidget {
                 autoPlay: true,
                 aspectRatio: 120 / 48,
                 viewportFraction: 1.0,
-                height: (MediaQuery.of(context).size.width - 32) * (48 / 120),
+                //height: (MediaQuery.of(context).size.width - 32) * (48 / 120),
               ),
               items: controller.banner.map((item) {
-                return NetImage(
-                  item.image,
-                  elevation: 0,
+                return GestureDetector(
+                  onTap: () {
+                    Utils.handleUrl(item.link);
+                  },
+                  child: NetImage(
+                    item.image,
+                    elevation: 0,
+                  ),
                 );
               }).toList(),
             ),

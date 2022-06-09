@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_ithome/app/common/app_style.dart';
 import 'package:flutter_ithome/app/common/log.dart';
+import 'package:flutter_ithome/app/common/utils.dart';
 import 'package:flutter_ithome/app/controller/news/news_detail_controller.dart';
+import 'package:flutter_ithome/app/route/route_path.dart';
 import 'package:flutter_ithome/widget/bilibili_video_card.dart';
 import 'package:flutter_ithome/widget/empty.dart';
 import 'package:flutter_ithome/widget/error.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_ithome/widget/loadding.dart';
 import 'package:flutter_ithome/widget/net_image.dart';
 import 'package:get/get.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetailPage extends StatelessWidget {
   final int newsId;
@@ -21,7 +24,7 @@ class NewsDetailPage extends StatelessWidget {
     return Scaffold(
       // appBar: AppBar(),
       backgroundColor: Theme.of(context).cardColor,
-      body: GetX<NewsDetailControler>(
+      body: GetBuilder<NewsDetailControler>(
         init: NewsDetailControler(newsId),
         tag: newsId.toString(),
         builder: (controller) {
@@ -42,56 +45,64 @@ class NewsDetailPage extends StatelessWidget {
             value: Get.isDarkMode
                 ? SystemUiOverlayStyle.light
                 : SystemUiOverlayStyle.dark,
-            child: Stack(
+            child: Column(
               children: [
-                ListView(
-                  padding: AppStyle.edgeInsetsA12.copyWith(
-                    top: AppStyle.statusBarHeight + 12,
-                  ),
-                  children: [
-                    Padding(
-                      padding: AppStyle.edgeInsetsA8,
-                      child: Text(
-                        controller.title.value,
-                        style: const TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
-                      padding: AppStyle.edgeInsetsA8,
-                      child: Text(
-                        "${controller.postTime}    ${controller.source}(${controller.author})",
-                        style: AppStyle.introTetxStyle,
-                      ),
-                    ),
-                    const Divider(),
-                    _buildContent(context, controller),
-                    Padding(
-                      padding: AppStyle.edgeInsetsH8,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Container(
+                  height: AppStyle.statusBarHeight,
+                  color: Theme.of(context).cardColor,
+                ),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      ListView(
+                        padding: AppStyle.edgeInsetsA12,
                         children: [
-                          Text(
-                            "责编：${controller.head}",
-                            style: AppStyle.introTetxStyle,
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              "查看原文",
-                              style: TextStyle(fontSize: 12),
+                          Padding(
+                            padding: AppStyle.edgeInsetsA8,
+                            child: Text(
+                              controller.title.value,
+                              style: const TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold),
                             ),
-                          )
+                          ),
+                          Padding(
+                            padding: AppStyle.edgeInsetsA8,
+                            child: Text(
+                              "${controller.postTime}    ${controller.source}(${controller.author})",
+                              style: AppStyle.introTetxStyle,
+                            ),
+                          ),
+                          const Divider(),
+                          _buildContent(context, controller),
+                          Padding(
+                            padding: AppStyle.edgeInsetsH8,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "责编：${controller.head}",
+                                  style: AppStyle.introTetxStyle,
+                                ),
+                                TextButton(
+                                  onPressed: controller.toOriginal,
+                                  child: const Text(
+                                    "查看原文",
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
 
-                //页面加载中
-                Visibility(
-                  visible: controller.pageLoadding.value,
-                  child: const LoaddingWidget(),
+                      //页面加载中
+                      Visibility(
+                        visible: controller.pageLoadding.value,
+                        child: const LoaddingWidget(),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -199,6 +210,11 @@ class NewsDetailPage extends StatelessWidget {
       onImageTap: (url, context, attributes, element) {
         Log.i(url ?? "");
       },
+      onLinkTap: (url, context, attributes, element) {
+        Log.i(url ?? '');
+
+        Utils.handleUrl(url ?? '');
+      },
     );
   }
 
@@ -210,7 +226,7 @@ class NewsDetailPage extends StatelessWidget {
           children: [
             Expanded(
               child: IconButton(
-                onPressed: Get.back,
+                onPressed: () => Get.back(id: 1),
                 icon: const Icon(Remix.arrow_left_line),
               ),
             ),

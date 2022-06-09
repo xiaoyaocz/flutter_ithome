@@ -7,7 +7,7 @@ environment:
 
 dependencies: 
   cupertino_icons: ^1.0.2
-  get: ^4.6.3
+  
   dio: ^4.0.6
   flutter_html: ^2.2.1
   logger: ^1.1.0
@@ -20,6 +20,7 @@ dependencies:
   hive_flutter: ^1.1.0
   intl: 0.17.0
   carousel_slider: 4.1.1
+  get: ^4.6.5
   flutter: 
     sdk: flutter
 

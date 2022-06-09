@@ -12,7 +12,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: RoutePath.kIndex,
-      page: () => const IndexPage(),
+      page: () => IndexPage(),
       bindings: [
         BindingsBuilder.put(
           () => IndexController(),

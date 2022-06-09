@@ -1,4 +1,7 @@
+import 'package:flutter_ithome/app/route/route_path.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
   static DateFormat dateFormat = DateFormat("MM-dd HH:mm");
@@ -27,5 +30,22 @@ class Utils {
     }
 
     return dateFormatWithYear.format(dt);
+  }
+
+  /// 处理链接
+  static void handleUrl(String url) async {
+    if (url.isEmpty) return;
+    var uri = Uri.parse(url);
+    if (uri.host == 'www.ithome.com' && uri.path.contains('/0/')) {
+      Get.toNamed(RoutePath.kNewsDetail, parameters: {
+        'newsId': uri.path
+            .replaceAll('/0/', '')
+            .replaceAll('/', '')
+            .replaceAll('.htm', '')
+      });
+      return;
+    }
+
+    launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }

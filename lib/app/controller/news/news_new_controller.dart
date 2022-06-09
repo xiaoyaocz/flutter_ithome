@@ -34,17 +34,15 @@ class NewsNewController extends BasePageController<NewsItemModel> {
 
   @override
   Future refreshData() {
-    loadBanner();
-    loadTopNews();
+    loadBannerAndTopNews();
+
     return super.refreshData();
   }
 
-  void loadBanner() async {
+  void loadBannerAndTopNews() async {
     banner.value = await request.getBanner();
-  }
-
-  void loadTopNews() async {
     topNews.value = await request.getTopNews();
+    update();
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:flutter_ithome/app/common/utils.dart';
 import 'package:flutter_ithome/app/controller/base_controller.dart';
 import 'package:flutter_ithome/request/news_request.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class NewsDetailControler extends BaseController {
   final int newsId;
@@ -15,6 +16,7 @@ class NewsDetailControler extends BaseController {
   var source = "IT之家".obs;
   var author = "--".obs;
   var head = "".obs;
+  var url = "";
   final NewsRequest request = NewsRequest();
   @override
   void onInit() {
@@ -24,6 +26,7 @@ class NewsDetailControler extends BaseController {
 
   void loadDetail() async {
     pageLoadding.value = true;
+    update();
     try {
       var model = await request.getNewsDetail(newsId: newsId);
       title.value = model.title;
@@ -33,11 +36,18 @@ class NewsDetailControler extends BaseController {
       source.value = model.newssource;
       author.value = model.newsauthor;
       head.value = model.z ?? "";
+      url = model.url;
       Log.d(content.value);
     } catch (e) {
       pageError.value = true;
     } finally {
       pageLoadding.value = false;
+      update();
     }
+  }
+
+  void toOriginal() {
+    launchUrlString('https://www.ithome.com$url',
+        mode: LaunchMode.externalApplication);
   }
 }

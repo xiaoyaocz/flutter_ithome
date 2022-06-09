@@ -28,9 +28,8 @@ class NewsItemWidget extends StatelessWidget {
       child: InkWell(
         onTap: () => Get.toNamed(
           RoutePath.kNewsDetail,
-          parameters: {
-            "newsId": item.newsid.toString(),
-          },
+          arguments: item.newsid,
+          id: 1,
         ),
         child: widget,
       ),
