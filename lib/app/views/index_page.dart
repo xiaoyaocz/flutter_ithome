@@ -3,52 +3,48 @@ import 'package:flutter_ithome/app/common/log.dart';
 import 'package:flutter_ithome/app/controller/index_controller.dart';
 import 'package:flutter_ithome/app/route/route_path.dart';
 import 'package:flutter_ithome/app/views/news/news_detail_page.dart';
-import 'package:flutter_ithome/app/views/news_page.dart';
-import 'package:flutter_ithome/app/views/quan_page.dart';
-import 'package:flutter_ithome/app/views/user_page.dart';
 import 'package:get/get.dart';
 import 'package:remixicon/remixicon.dart';
 
 class IndexPage extends GetView<IndexController> {
   IndexPage({Key? key}) : super(key: key);
-  final GlobalKey indexKey = GlobalKey();
   final GlobalKey<NavigatorState>? contentKey = Get.nestedKey(1);
   @override
   Widget build(BuildContext context) {
     final content = _buildContent();
     final indexStack = _buildIndexStack();
-    return Obx(
-      () => MediaQuery.of(context).size.width > 768
-          ? _buildWide(context, indexStack, content)
-          : _buildNarrow(context, indexStack, content),
-    );
+    return MediaQuery.of(context).size.width > 768
+        ? _buildWide(context, indexStack, content)
+        : _buildNarrow(context, indexStack, content);
   }
 
   Widget _buildNarrow(BuildContext context, Widget indexStack, Widget content) {
     return Stack(
       children: [
-        Scaffold(
-          body: indexStack,
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Theme.of(context).cardColor,
-            selectedFontSize: 10,
-            unselectedFontSize: 10,
-            currentIndex: controller.index.value,
-            onTap: controller.setIndex,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Remix.home_4_line),
-                label: "资讯",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Remix.chat_smile_2_line),
-                label: "圈子",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Remix.user_smile_line),
-                label: "我的",
-              ),
-            ],
+        Obx(
+          () => Scaffold(
+            body: indexStack,
+            bottomNavigationBar: BottomNavigationBar(
+              backgroundColor: Theme.of(context).cardColor,
+              selectedFontSize: 10,
+              unselectedFontSize: 10,
+              currentIndex: controller.index.value,
+              onTap: controller.setIndex,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Remix.home_4_line),
+                  label: "资讯",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Remix.chat_smile_2_line),
+                  label: "圈子",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Remix.user_smile_line),
+                  label: "我的",
+                ),
+              ],
+            ),
           ),
         ),
         IgnorePointer(
@@ -63,44 +59,47 @@ class IndexPage extends GetView<IndexController> {
     return Scaffold(
       body: Row(
         children: [
-          Visibility(
-            visible: MediaQuery.of(context).size.width > 768,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 2),
-              child: Material(
-                elevation: 2,
-                child: NavigationRail(
-                  backgroundColor: Theme.of(context).cardColor,
-                  labelType: NavigationRailLabelType.all,
-                  onDestinationSelected: controller.setIndex,
-                  selectedIndex: controller.index.value,
-                  selectedLabelTextStyle: TextStyle(
-                    fontSize: 10,
-                    color: Theme.of(context).primaryColor,
+          Obx(
+            () => Visibility(
+              visible: MediaQuery.of(context).size.width > 768,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 2),
+                child: Material(
+                  elevation: 2,
+                  child: NavigationRail(
+                    backgroundColor: Theme.of(context).cardColor,
+                    labelType: NavigationRailLabelType.all,
+                    onDestinationSelected: controller.setIndex,
+                    selectedIndex: controller.index.value,
+                    selectedLabelTextStyle: TextStyle(
+                      fontSize: 10,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    unselectedLabelTextStyle: TextStyle(
+                      fontSize: 10,
+                      color: Theme.of(context).textTheme.bodyText1?.color,
+                    ),
+                    destinations: const [
+                      NavigationRailDestination(
+                        icon: Icon(Remix.home_4_line),
+                        label: Text("资讯"),
+                      ),
+                      NavigationRailDestination(
+                        icon: Icon(Remix.chat_smile_2_line),
+                        label: Text("圈子"),
+                      ),
+                      NavigationRailDestination(
+                        icon: Icon(Remix.user_smile_line),
+                        label: Text("我的"),
+                      ),
+                    ],
                   ),
-                  unselectedLabelTextStyle: TextStyle(
-                    fontSize: 10,
-                    color: Theme.of(context).textTheme.bodyText1?.color,
-                  ),
-                  destinations: const [
-                    NavigationRailDestination(
-                      icon: Icon(Remix.home_4_line),
-                      label: Text("资讯"),
-                    ),
-                    NavigationRailDestination(
-                      icon: Icon(Remix.chat_smile_2_line),
-                      label: Text("圈子"),
-                    ),
-                    NavigationRailDestination(
-                      icon: Icon(Remix.user_smile_line),
-                      label: Text("我的"),
-                    ),
-                  ],
                 ),
               ),
             ),
           ),
           Expanded(
+            flex: 4,
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
@@ -113,6 +112,7 @@ class IndexPage extends GetView<IndexController> {
             ),
           ),
           Expanded(
+            flex: 6,
             child: content,
           ),
         ],
@@ -121,14 +121,11 @@ class IndexPage extends GetView<IndexController> {
   }
 
   Widget _buildIndexStack() {
-    return IndexedStack(
-      key: indexKey,
-      index: controller.index.value,
-      children: const [
-        NewsPage(),
-        QuanPage(),
-        UserPage(),
-      ],
+    return Obx(
+      () => IndexedStack(
+        index: controller.index.value,
+        children: controller.pages,
+      ),
     );
   }
 

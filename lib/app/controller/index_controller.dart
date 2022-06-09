@@ -1,9 +1,17 @@
 import 'package:flutter_ithome/app/common/event_bus.dart';
+import 'package:flutter_ithome/app/views/news_page.dart';
+import 'package:flutter_ithome/app/views/quan_page.dart';
+import 'package:flutter_ithome/app/views/user_page.dart';
 import 'package:get/get.dart';
 
 class IndexController extends GetxController {
   final index = 0.obs;
   final showContent = false.obs;
+  final pages = const [
+    NewsPage(),
+    QuanPage(),
+    UserPage(),
+  ];
   @override
   void onClose() {}
 
