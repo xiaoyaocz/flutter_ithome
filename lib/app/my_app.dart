@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ithome/app/route/app_pages.dart';
 import 'package:get/get.dart';

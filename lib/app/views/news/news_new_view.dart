@@ -4,6 +4,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_ithome/app/common/app_style.dart';
 import 'package:flutter_ithome/app/common/utils.dart';
 import 'package:flutter_ithome/app/controller/news/news_new_controller.dart';
+import 'package:flutter_ithome/widget/adjustable_scroll_controller.dart';
 import 'package:flutter_ithome/widget/empty.dart';
 import 'package:flutter_ithome/widget/error.dart';
 import 'package:flutter_ithome/widget/keep_alive_wrapper.dart';
@@ -44,6 +45,7 @@ class NewsNewView extends StatelessWidget {
                 child: ListView.builder(
                   padding: AppStyle.edgeInsetsV8,
                   itemCount: c.list.length + 1,
+                  controller: AdjustableScrollController(),
                   itemBuilder: (_, i) {
                     if (i == 0) {
                       return _buildHeader(context, c);

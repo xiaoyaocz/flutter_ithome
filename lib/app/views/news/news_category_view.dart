@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_ithome/app/common/app_style.dart';
 import 'package:flutter_ithome/app/controller/news/news_category_controller.dart';
+import 'package:flutter_ithome/widget/adjustable_scroll_controller.dart';
 import 'package:flutter_ithome/widget/empty.dart';
 import 'package:flutter_ithome/widget/error.dart';
 import 'package:flutter_ithome/widget/keep_alive_wrapper.dart';
@@ -42,6 +43,7 @@ class NewsCategoryView extends StatelessWidget {
                 child: ListView.builder(
                   padding: AppStyle.edgeInsetsV8,
                   itemCount: c.list.length,
+                  controller: AdjustableScrollController(),
                   itemBuilder: (_, i) {
                     var item = c.list[i];
                     return NewsItemWidget(item);

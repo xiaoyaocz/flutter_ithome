@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ithome/app/common/app_navigator.dart';
 import 'package:flutter_ithome/app/common/app_style.dart';
 import 'package:flutter_ithome/app/common/utils.dart';
 import 'package:flutter_ithome/app/route/route_path.dart';
@@ -26,10 +27,9 @@ class NewsItemWidget extends StatelessWidget {
     return Material(
       color: Theme.of(context).cardColor,
       child: InkWell(
-        onTap: () => Get.toNamed(
+        onTap: () => AppNavigator.toContentPage(
           RoutePath.kNewsDetail,
-          arguments: item.newsid,
-          id: 1,
+          arg: item.newsid,
         ),
         child: widget,
       ),
@@ -106,7 +106,7 @@ class NewsItemWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(4.0),
                   child: NetImage(
                     item.images!.first,
-                    height: (MediaQuery.of(context).size.width - 24) * 0.5,
+                    width: double.infinity,
                     elevation: 0,
                     borderRadius: 8,
                   ),

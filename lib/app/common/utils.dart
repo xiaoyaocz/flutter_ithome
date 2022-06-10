@@ -1,3 +1,4 @@
+import 'package:flutter_ithome/app/common/app_navigator.dart';
 import 'package:flutter_ithome/app/route/route_path.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -37,12 +38,15 @@ class Utils {
     if (url.isEmpty) return;
     var uri = Uri.parse(url);
     if (uri.host == 'www.ithome.com' && uri.path.contains('/0/')) {
-      Get.toNamed(RoutePath.kNewsDetail, parameters: {
-        'newsId': uri.path
-            .replaceAll('/0/', '')
-            .replaceAll('/', '')
-            .replaceAll('.htm', '')
-      });
+      var newsId = int.tryParse(
+            uri.path
+                .replaceAll('/0/', '')
+                .replaceAll('/', '')
+                .replaceAll('.htm', ''),
+          ) ??
+          0;
+      AppNavigator.toContentPage(RoutePath.kNewsDetail, arg: newsId);
+
       return;
     }
 

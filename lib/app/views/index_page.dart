@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ithome/app/common/app_navigator.dart';
 import 'package:flutter_ithome/app/common/log.dart';
 import 'package:flutter_ithome/app/controller/index_controller.dart';
 import 'package:flutter_ithome/app/route/route_path.dart';
@@ -6,14 +7,17 @@ import 'package:flutter_ithome/app/views/news/news_detail_page.dart';
 import 'package:get/get.dart';
 import 'package:remixicon/remixicon.dart';
 
+const double tabletWidth = 1000;
+
 class IndexPage extends GetView<IndexController> {
   IndexPage({Key? key}) : super(key: key);
-  final GlobalKey<NavigatorState>? contentKey = Get.nestedKey(1);
+  final GlobalKey indexKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
-    final content = _buildContent();
+    final content = _buildContentNavigator();
     final indexStack = _buildIndexStack();
-    return MediaQuery.of(context).size.width > 768
+    return MediaQuery.of(context).size.width > tabletWidth
         ? _buildWide(context, indexStack, content)
         : _buildNarrow(context, indexStack, content);
   }
@@ -47,10 +51,12 @@ class IndexPage extends GetView<IndexController> {
             ),
           ),
         ),
-        IgnorePointer(
-          ignoring: !controller.showContent.value,
-          child: content,
-        ),
+        Obx(
+          () => IgnorePointer(
+            ignoring: !controller.showContent.value,
+            child: content,
+          ),
+        )
       ],
     );
   }
@@ -61,7 +67,7 @@ class IndexPage extends GetView<IndexController> {
         children: [
           Obx(
             () => Visibility(
-              visible: MediaQuery.of(context).size.width > 768,
+              visible: MediaQuery.of(context).size.width > tabletWidth,
               child: Padding(
                 padding: const EdgeInsets.only(right: 2),
                 child: Material(
@@ -98,8 +104,8 @@ class IndexPage extends GetView<IndexController> {
               ),
             ),
           ),
-          Expanded(
-            flex: 4,
+          LimitedBox(
+            maxWidth: 500,
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
@@ -112,7 +118,6 @@ class IndexPage extends GetView<IndexController> {
             ),
           ),
           Expanded(
-            flex: 6,
             child: content,
           ),
         ],
@@ -123,23 +128,28 @@ class IndexPage extends GetView<IndexController> {
   Widget _buildIndexStack() {
     return Obx(
       () => IndexedStack(
+        key: indexKey,
         index: controller.index.value,
         children: controller.pages,
       ),
     );
   }
 
-  Widget _buildContent() {
+  /// 子路由
+  Widget _buildContentNavigator() {
     return WillPopScope(
       onWillPop: () async {
-        if (contentKey!.currentState!.canPop()) {
-          contentKey!.currentState!.pop();
+        if (Navigator.canPop(Get.context!)) {
+          return true;
+        }
+        if (AppNavigator.contentKey!.currentState!.canPop()) {
+          AppNavigator.contentKey!.currentState!.pop();
           return false;
         }
         return true;
       },
       child: Navigator(
-        key: contentKey,
+        key: AppNavigator.contentKey,
         initialRoute: '/',
         onUnknownRoute: (settings) => GetPageRoute(
           page: () => const EmptyPage(),
@@ -158,6 +168,7 @@ class IndexPage extends GetView<IndexController> {
           if (settings.name == RoutePath.kNewsDetail) {
             return GetPageRoute(
               settings: settings,
+              transition: Transition.rightToLeft,
               page: () => NewsDetailPage(
                 settings.arguments as int,
               ),
@@ -175,7 +186,7 @@ class EmptyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery.of(context).size.width <= 768
+    return MediaQuery.of(context).size.width <= tabletWidth
         ? Container()
         : Scaffold(
             body: Center(
@@ -189,25 +200,15 @@ class EmptyPage extends StatelessWidget {
 }
 
 class MyObserver extends NavigatorObserver {
-// 添加导航监听后，跳转的时候需要使用Navigator.push路由
   @override
   void didPush(Route route, Route? previousRoute) {
     super.didPush(route, previousRoute);
     if (previousRoute != null) {
       var routeName = route.settings.name ?? "";
+      AppNavigator.currentContentRouteName = routeName;
       Get.find<IndexController>().showContent.value = routeName != '/';
+      print("当前路由：$routeName");
     }
-
-    // var previousName = '';
-    // if (previousRoute == null) {
-    //   previousName = 'null';
-    // } else {
-    //   previousName = previousRoute.settings.name ?? "";
-    // }
-    // print('NavObserverDidPush-Current:' +
-    //     (route.settings.name ?? "") +
-    //     '  Previous:' +
-    //     previousName);
   }
 
   @override
@@ -215,18 +216,8 @@ class MyObserver extends NavigatorObserver {
     super.didPop(route, previousRoute);
 
     var routeName = previousRoute?.settings.name ?? "";
-
+    AppNavigator.currentContentRouteName = routeName;
     Get.find<IndexController>().showContent.value = routeName != '/';
-
-    // var previousName = '';
-    // if (previousRoute == null) {
-    //   previousName = 'null';
-    // } else {
-    //   previousName = previousRoute.settings.name ?? "";
-    // }
-    // print('NavObserverDidPop--Current:' +
-    //     (route.settings.name ?? "") +
-    //     '  Previous:' +
-    //     previousName);
+    print("当前路由：$routeName");
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_ithome/app/common/app_navigator.dart';
 import 'package:flutter_ithome/app/common/app_style.dart';
 import 'package:flutter_ithome/app/common/log.dart';
 import 'package:flutter_ithome/app/common/utils.dart';
 import 'package:flutter_ithome/app/controller/news/news_detail_controller.dart';
 import 'package:flutter_ithome/app/route/route_path.dart';
+import 'package:flutter_ithome/widget/adjustable_scroll_controller.dart';
 import 'package:flutter_ithome/widget/bilibili_video_card.dart';
 import 'package:flutter_ithome/widget/empty.dart';
 import 'package:flutter_ithome/widget/error.dart';
@@ -56,6 +58,7 @@ class NewsDetailPage extends StatelessWidget {
                     children: [
                       ListView(
                         padding: AppStyle.edgeInsetsA12,
+                        controller: AdjustableScrollController(),
                         children: [
                           Padding(
                             padding: AppStyle.edgeInsetsA8,
@@ -224,10 +227,10 @@ class NewsDetailPage extends StatelessWidget {
         height: 56,
         child: Row(
           children: [
-            Expanded(
+            const Expanded(
               child: IconButton(
-                onPressed: () => Get.back(id: 1),
-                icon: const Icon(Remix.arrow_left_line),
+                onPressed: AppNavigator.closePage,
+                icon: Icon(Remix.arrow_left_line),
               ),
             ),
             Expanded(
