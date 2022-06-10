@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_ithome/app/common/app_style.dart';
 import 'package:flutter_ithome/app/common/log.dart';
 import 'package:flutter_ithome/app/common/utils.dart';
 import 'package:flutter_ithome/app/controller/news/news_detail_controller.dart';
-import 'package:flutter_ithome/app/route/route_path.dart';
 import 'package:flutter_ithome/widget/adjustable_scroll_controller.dart';
 import 'package:flutter_ithome/widget/bilibili_video_card.dart';
 import 'package:flutter_ithome/widget/empty.dart';
@@ -15,7 +15,6 @@ import 'package:flutter_ithome/widget/loadding.dart';
 import 'package:flutter_ithome/widget/net_image.dart';
 import 'package:get/get.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetailPage extends StatelessWidget {
   final int newsId;
@@ -242,7 +241,19 @@ class NewsDetailPage extends StatelessWidget {
             Expanded(
               child: IconButton(
                 onPressed: () {},
-                icon: const Icon(Remix.chat_smile_2_line),
+                icon: Badge(
+                  showBadge: true,
+                  padding: AppStyle.edgeInsetsA4.copyWith(top: 2, bottom: 2),
+                  shape: BadgeShape.square,
+                  borderRadius: BorderRadius.circular(8),
+                  elevation: 0,
+                  position: BadgePosition.topEnd(end: -14, top: -4),
+                  badgeContent: Text(
+                    '99+',
+                    style: TextStyle(fontSize: 10, color: Colors.white),
+                  ),
+                  child: const Icon(Remix.chat_smile_2_line),
+                ),
               ),
             ),
             Expanded(
@@ -254,7 +265,7 @@ class NewsDetailPage extends StatelessWidget {
             Expanded(
               child: IconButton(
                 onPressed: () {},
-                icon: const Icon(Remix.arrow_up_line),
+                icon: const Icon(Remix.settings_2_line),
               ),
             ),
           ],

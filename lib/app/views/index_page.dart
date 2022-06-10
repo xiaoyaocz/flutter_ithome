@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ithome/app/common/app_navigator.dart';
+import 'package:flutter_ithome/app/common/app_style.dart';
 import 'package:flutter_ithome/app/common/log.dart';
 import 'package:flutter_ithome/app/controller/index_controller.dart';
 import 'package:flutter_ithome/app/route/route_path.dart';
@@ -77,6 +78,9 @@ class IndexPage extends GetView<IndexController> {
                     labelType: NavigationRailLabelType.all,
                     onDestinationSelected: controller.setIndex,
                     selectedIndex: controller.index.value,
+                    leading: SizedBox(
+                      height: AppStyle.statusBarHeight,
+                    ),
                     selectedLabelTextStyle: TextStyle(
                       fontSize: 10,
                       color: Theme.of(context).primaryColor,
@@ -105,7 +109,7 @@ class IndexPage extends GetView<IndexController> {
             ),
           ),
           LimitedBox(
-            maxWidth: 500,
+            maxWidth: 400,
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
@@ -148,34 +152,36 @@ class IndexPage extends GetView<IndexController> {
         }
         return true;
       },
-      child: Navigator(
-        key: AppNavigator.contentKey,
-        initialRoute: '/',
-        onUnknownRoute: (settings) => GetPageRoute(
-          page: () => const EmptyPage(),
+      child: ClipRect(
+        child: Navigator(
+          key: AppNavigator.contentKey,
+          initialRoute: '/',
+          onUnknownRoute: (settings) => GetPageRoute(
+            page: () => const EmptyPage(),
+          ),
+          observers: [
+            MyObserver(),
+          ],
+          onGenerateRoute: (settings) {
+            Log.i(settings.arguments.toString());
+            if (settings.name == '/') {
+              return GetPageRoute(
+                settings: settings,
+                page: () => const EmptyPage(),
+              );
+            }
+            if (settings.name == RoutePath.kNewsDetail) {
+              return GetPageRoute(
+                settings: settings,
+                //transition: Transition.rightToLeft,
+                page: () => NewsDetailPage(
+                  settings.arguments as int,
+                ),
+              );
+            }
+            return GetPageRoute(page: () => Container());
+          },
         ),
-        observers: [
-          MyObserver(),
-        ],
-        onGenerateRoute: (settings) {
-          Log.i(settings.arguments.toString());
-          if (settings.name == '/') {
-            return GetPageRoute(
-              settings: settings,
-              page: () => const EmptyPage(),
-            );
-          }
-          if (settings.name == RoutePath.kNewsDetail) {
-            return GetPageRoute(
-              settings: settings,
-              transition: Transition.rightToLeft,
-              page: () => NewsDetailPage(
-                settings.arguments as int,
-              ),
-            );
-          }
-          return GetPageRoute(page: () => Container());
-        },
       ),
     );
   }
