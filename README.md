@@ -1,26 +1,14 @@
-# flutter_ithome
+# IT之家Flutter
 
-IT之家第三方Flutter客户端
+全平台支持的IT之家第三方客户端
 
-## Getting Started
+个人练习用，施工中...
 
-支持平台：
-- Android
-- iOS
-- Windows
-- Linux
-- MacOS
+![macos.png](https://vip2.loli.io/2022/06/12/yE1eQRMoGlYH5AJ.png)
 
-功能：
-- 新闻浏览
-- 新闻评论
-- 圈子浏览
-- 历史记录
-- 收藏
-- 多语言支持
-- 多尺寸屏幕适配
-
-技术点：
-- `Get` 状态管理、路由、多语言框架
-- `Dio` 网络请求
-- `Hive` 本地数据库
+支持的平台：
+✅ iOS
+✅ Android
+✅ Windows
+✅ MacOS
+✅ Linux
