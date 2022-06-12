@@ -2,10 +2,13 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 class AppSettingsService extends GetxService {
+  static AppSettingsService get instance => Get.find<AppSettingsService>();
+
   /// 新闻-自定义的栏目
   static const String kNewsCategores = "NewsCategores";
-  static const String kThemeMode = "ThemeMode";
+  static const String kDarkMode = "DarkMode";
   static const String kThemeColor = "ThemeColor";
+  static const String kReadFontSize = "ReadFontSize";
 
   late Box settingsBox;
   Future init() async {

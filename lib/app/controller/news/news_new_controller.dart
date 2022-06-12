@@ -16,11 +16,17 @@ class NewsNewController extends BasePageController<NewsItemModel> {
 
   StreamSubscription<dynamic>? streamSubscription;
 
+  StreamSubscription<dynamic>? refreshNewsItemStreamSubscription;
+
   @override
   void onInit() {
     streamSubscription =
         EventBus.instance.listen(EventBus.kEventRefreshNews, (e) {
       refreshData();
+    });
+    refreshNewsItemStreamSubscription =
+        EventBus.instance.listen(EventBus.kEventRefreshNewsItem, (e) {
+      update();
     });
     refreshData();
     super.onInit();
@@ -29,6 +35,7 @@ class NewsNewController extends BasePageController<NewsItemModel> {
   @override
   void dispose() {
     streamSubscription?.cancel();
+    refreshNewsItemStreamSubscription?.cancel();
     super.dispose();
   }
 

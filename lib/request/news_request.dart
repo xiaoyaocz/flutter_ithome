@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_ithome/app/common/utils.dart';
 import 'package:flutter_ithome/model/news_banner_model.dart';
 import 'package:flutter_ithome/model/news_detail_model.dart';
 import 'package:flutter_ithome/model/news_item_model.dart';
@@ -94,5 +95,16 @@ class NewsRequest {
       url,
     );
     return NewsDetailModel.fromJson(result);
+  }
+
+  /// 新闻评论
+  /// * [newsId] 新闻ID
+  Future<int> getNewsCommentCount({
+    required int newsId,
+  }) async {
+    var url = "${Api.kCommentApiBaseUrl}/api/comment/getcount";
+    var result = await HttpClient.instance.getJson(url,
+        queryParameters: {"sn": Utils.getCommentSn(newsId.toString())});
+    return result["content"]?["count"] ?? 0;
   }
 }

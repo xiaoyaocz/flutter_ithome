@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -5,6 +6,8 @@ class AppNavigator {
   /// 当前内容路由的名称
   static String currentContentRouteName = "/";
   static final GlobalKey<NavigatorState>? contentKey = Get.nestedKey(1);
+
+  static BuildContext get contentBuildContext => contentKey!.currentContext!;
 
   static void toPage(String name, {dynamic arg}) {
     Get.toNamed(name, arguments: arg);
@@ -24,5 +27,13 @@ class AppNavigator {
     } else {
       Get.back(id: 1);
     }
+  }
+
+  static void showBottomSheet(Widget widget) {
+    showModalBottomSheet(
+      context: contentKey!.currentContext!,
+      builder: (context) => widget,
+      routeSettings: const RouteSettings(name: "/modalBottomSheet"),
+    );
   }
 }

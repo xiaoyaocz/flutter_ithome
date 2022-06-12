@@ -7,9 +7,9 @@ import 'package:get/get.dart';
 class IndexController extends GetxController {
   final index = 0.obs;
   final showContent = false.obs;
-  final pages = const [
-    NewsPage(),
-    QuanPage(),
+  final pages = [
+    const NewsPage(),
+    const QuanPage(),
     UserPage(),
   ];
   @override

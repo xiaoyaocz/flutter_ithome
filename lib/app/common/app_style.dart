@@ -85,7 +85,7 @@ class AppStyle {
   static double get bottomBarHeight =>
       MediaQuery.of(Get.context!).padding.bottom;
 
-  static TextStyle titleTetxStyle = const TextStyle(fontSize: 15);
+  static TextStyle titleTextStyle = const TextStyle(fontSize: 15);
   static TextStyle introTetxStyle =
       const TextStyle(fontSize: 12, color: Colors.grey);
 }

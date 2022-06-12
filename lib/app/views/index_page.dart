@@ -83,7 +83,7 @@ class IndexPage extends GetView<IndexController> {
                     ),
                     selectedLabelTextStyle: TextStyle(
                       fontSize: 10,
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     unselectedLabelTextStyle: TextStyle(
                       fontSize: 10,

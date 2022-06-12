@@ -2,7 +2,7 @@
     package="com.example.flutter_ithome">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="flutter_ithome"
+        android:label="IT之家"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">

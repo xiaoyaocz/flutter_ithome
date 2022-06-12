@@ -22,11 +22,12 @@ class NewsDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = NewsDetailControler(newsId);
     return Scaffold(
       // appBar: AppBar(),
       backgroundColor: Theme.of(context).cardColor,
       body: GetBuilder<NewsDetailControler>(
-        init: NewsDetailControler(newsId),
+        init: controller,
         tag: newsId.toString(),
         builder: (controller) {
           // 页面错误
@@ -111,7 +112,7 @@ class NewsDetailPage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: _buildBottomBar(),
+      bottomNavigationBar: _buildBottomBar(controller),
     );
   }
 
@@ -131,7 +132,7 @@ class NewsDetailPage extends StatelessWidget {
           ),
         ),
         "p": Style(
-          fontSize: const FontSize(16),
+          fontSize: FontSize(controller.fontSize.value),
           lineHeight: const LineHeight(1.6),
           textAlign: TextAlign.justify,
         ),
@@ -220,7 +221,7 @@ class NewsDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomBar() {
+  Widget _buildBottomBar(NewsDetailControler controller) {
     return BottomAppBar(
       child: SizedBox(
         height: 56,
@@ -233,38 +234,49 @@ class NewsDetailPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(Remix.star_line),
-              ),
-            ),
-            Expanded(
-              child: IconButton(
-                onPressed: () {},
-                icon: Badge(
-                  showBadge: true,
-                  padding: AppStyle.edgeInsetsA4.copyWith(top: 2, bottom: 2),
-                  shape: BadgeShape.square,
-                  borderRadius: BorderRadius.circular(8),
-                  elevation: 0,
-                  position: BadgePosition.topEnd(end: -14, top: -4),
-                  badgeContent: Text(
-                    '99+',
-                    style: TextStyle(fontSize: 10, color: Colors.white),
-                  ),
-                  child: const Icon(Remix.chat_smile_2_line),
+              child: Obx(
+                () => IconButton(
+                  onPressed: controller.collect,
+                  icon: controller.collected.value
+                      ? const Icon(
+                          Remix.star_fill,
+                          color: Colors.red,
+                        )
+                      : const Icon(
+                          Remix.star_line,
+                        ),
                 ),
               ),
             ),
             Expanded(
               child: IconButton(
                 onPressed: () {},
+                icon: Obx(
+                  () => Badge(
+                    showBadge: controller.commentCount.value > 0,
+                    padding: const EdgeInsets.all(4),
+                    elevation: 0,
+                    position: BadgePosition.topEnd(end: -14, top: -4),
+                    badgeContent: Text(
+                      controller.commentCount.value > 99
+                          ? "99"
+                          : "${controller.commentCount.value}",
+                      style: const TextStyle(fontSize: 10, color: Colors.white),
+                    ),
+                    child: const Icon(Remix.chat_smile_2_line),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: IconButton(
+                onPressed: controller.share,
                 icon: const Icon(Remix.share_box_line),
               ),
             ),
             Expanded(
               child: IconButton(
-                onPressed: () {},
+                onPressed: controller.setting,
                 icon: const Icon(Remix.settings_2_line),
               ),
             ),

@@ -75,7 +75,9 @@ class NewsAppBar extends StatelessWidget with PreferredSizeWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/logo/about_logo.png',
+                    Get.isDarkMode
+                        ? 'assets/logo/about_logo_night2.png'
+                        : 'assets/logo/about_logo.png',
                     height: 24,
                   ),
                   AppStyle.hGap16,
@@ -105,8 +107,9 @@ class NewsAppBar extends StatelessWidget with PreferredSizeWidget {
                   Expanded(
                     child: TabBar(
                       controller: tabController,
-                      labelColor: Colors.black,
+                      labelColor: Get.isDarkMode ? Colors.white : Colors.black,
                       indicatorSize: TabBarIndicatorSize.label,
+                      indicatorColor: Theme.of(context).colorScheme.secondary,
                       isScrollable: true,
                       labelStyle: const TextStyle(height: 1.0),
                       tabs: categores

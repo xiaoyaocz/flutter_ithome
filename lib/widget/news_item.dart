@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ithome/app/common/app_navigator.dart';
 import 'package:flutter_ithome/app/common/app_style.dart';
+import 'package:flutter_ithome/app/common/event_bus.dart';
 import 'package:flutter_ithome/app/common/utils.dart';
 import 'package:flutter_ithome/app/route/route_path.dart';
+import 'package:flutter_ithome/app/service/app_storage_service.dart';
 import 'package:flutter_ithome/model/news_item_model.dart';
 import 'package:flutter_ithome/widget/net_image.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,7 @@ class NewsItemWidget extends StatelessWidget {
 
   /// 是否置顶
   final bool isTop;
+
   const NewsItemWidget(this.item, {this.isTop = false, Key? key})
       : super(key: key);
 
@@ -27,10 +30,19 @@ class NewsItemWidget extends StatelessWidget {
     return Material(
       color: Theme.of(context).cardColor,
       child: InkWell(
-        onTap: () => AppNavigator.toContentPage(
-          RoutePath.kNewsDetail,
-          arg: item.newsid,
-        ),
+        onTap: () {
+          AppStorageService.instance.insertNewsHistory(
+            item.newsid,
+            url: '',
+            title: item.title,
+            image: item.image,
+          );
+          EventBus.instance.emit(EventBus.kEventRefreshNewsItem, item.newsid);
+          AppNavigator.toContentPage(
+            RoutePath.kNewsDetail,
+            arg: item.newsid,
+          );
+        },
         child: widget,
       ),
     );
@@ -126,7 +138,9 @@ class NewsItemWidget extends StatelessWidget {
       item.title,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: AppStyle.titleTetxStyle,
+      style: AppStorageService.instance.existNewsHistory(item.newsid)
+          ? AppStyle.titleTextStyle.copyWith(color: Colors.grey)
+          : AppStyle.titleTextStyle,
     );
   }
 

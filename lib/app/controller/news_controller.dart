@@ -15,8 +15,8 @@ class NewsController extends GetxController
   /// 全部栏目
   List<CategoryItem> allCategores = [
     CategoryItem(name: "最新", id: "news"),
-    CategoryItem(name: "排行榜", id: "rank"),
-    CategoryItem(name: "热评", id: "comment"),
+    //CategoryItem(name: "排行榜", id: "rank"),
+    //CategoryItem(name: "热评", id: "comment"),
     CategoryItem(name: "精读", id: "jingdum"),
     CategoryItem(name: "原创", id: "originalm"),
     CategoryItem(name: "评测", id: "labsm"),

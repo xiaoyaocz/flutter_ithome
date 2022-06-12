@@ -7,6 +7,9 @@ class EventBus {
   /// 刷新新闻事件
   static const String kEventRefreshNews = "RefreshNews";
 
+  /// 刷新新闻ITEM
+  static const String kEventRefreshNewsItem = "RefreshNewsItem";
+
   static EventBus? _instance;
 
   static EventBus get instance {
