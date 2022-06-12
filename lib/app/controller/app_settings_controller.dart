@@ -8,7 +8,7 @@ class AppSettingsController extends GetxController {
   void onInit() {
     // 繁体名称转简体
     darkMode.value = AppSettingsService.instance
-        .getValue(AppSettingsService.kDarkMode, true);
+        .getValue(AppSettingsService.kDarkMode, false);
     super.onInit();
   }
 

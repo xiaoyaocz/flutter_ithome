@@ -30,5 +30,4 @@ void main() async {
 Future initServices() async {
   await Get.put(AppSettingsService()).init();
   await Get.put(AppStorageService()).init();
-  Log.w(Utils.getCommentSn("623698"));
 }
