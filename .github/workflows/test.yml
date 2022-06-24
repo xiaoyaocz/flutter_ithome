@@ -9,7 +9,7 @@ jobs:
         with:
           flutter-version: '3.0.3'
       - name: Restore packages
-        run: flutter pub get"
+        run: flutter pub get
       - name: Build APK
         run: flutter build apk
       - name: Upload APK
