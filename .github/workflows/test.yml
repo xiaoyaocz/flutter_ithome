@@ -14,7 +14,7 @@ jobs:
       #- name: Build APK
       #  run: flutter build apk
       - name: Build ipa
-        run: flutter build ipa --release --no-codesign
+        run: flutter build ios --release --no-codesign
       - name: Upload Release
         uses: actions/upload-artifact@v3
         with:
