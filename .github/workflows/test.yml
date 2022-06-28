@@ -1,8 +1,8 @@
-name: test-github-action
+name: app-build-action
 on: [push]
 jobs:
-  test-build:
-    runs-on: ubuntu-latest
+  build-mac-ios-android:
+    runs-on: macos-latest
     steps:
       - name: Flutter action
         uses: subosito/flutter-action@v2.4.0
@@ -13,9 +13,13 @@ jobs:
         run: flutter pub get
       - name: Build APK
         run: flutter build apk
-      - name: Upload APK
+      - name: Build ipa
+        run: flutter build ipa --release --no-codesign
+      - name: Upload Release
         uses: actions/upload-artifact@v3
         with:
-          name: my-artifact
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: app-release
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/ios/iphoneos
       - run: echo "🍏 This job's status is ${{ job.status }}."
